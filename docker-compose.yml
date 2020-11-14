@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+        ACCEPT_EULA: "Y"
+        SA_PASSWORD: "BackendTest2020"
+        MSSQL_PID: Express
+    ports:
+      - "5433:1433"
+    volumes:
+      - 'C:\DockerVolumes:/var/opt/mssql/data'
+
+  contentservice.api:
+    image: ${DOCKER_REGISTRY-}contentserviceapi
+    build:
+      context: .
+      dockerfile: ContentService.API/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - ms-sql-server
