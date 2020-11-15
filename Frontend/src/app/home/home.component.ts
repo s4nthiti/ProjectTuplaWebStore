@@ -1,21 +1,24 @@
-﻿import { Component } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Component, VERSION } from '@angular/core';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
-import { User } from '@app/_models';
-import { UserService, AuthenticationService } from '@app/_services';
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  providers: [NgbCarouselConfig]  // add NgbCarouselConfig to the component providers
 
-@Component({ templateUrl: 'home.component.html' })
-export class HomeComponent {
-    loading = false;
-    users: User[];
+})
+export class HomeComponent  {
+  name = 'Angular ' + VERSION.major;
+  
+  images = [700, 800, 807].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
-    constructor(private userService: UserService) { }
+  constructor(config: NgbCarouselConfig) {
+    // customize default values of carousels used by this component tree
+    config.interval = 2000;
+    config.keyboard = true;
+    config.pauseOnHover = true;
+  }
 
-    ngOnInit() {
-        this.loading = true;
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.loading = false;
-            this.users = users;
-        });
-    }
 }

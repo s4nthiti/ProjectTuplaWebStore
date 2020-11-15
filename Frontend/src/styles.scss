@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+@font-face {font-family: "Pastel W01 Regular";
+  src: url("assets/fonts/5472e8c15347a56c864e146628787886.eot"); /* IE9*/
+  src: url("assets/fonts/5472e8c15347a56c864e146628787886.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("assets/fonts/5472e8c15347a56c864e146628787886.woff2") format("woff2"), /* chrome、firefox */
+  url("assets/fonts/5472e8c15347a56c864e146628787886.woff") format("woff"), /* chrome、firefox */
+  url("assets/fonts/5472e8c15347a56c864e146628787886.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url("assets/fonts/5472e8c15347a56c864e146628787886.svg#Pastel W01 Regular") format("svg"); /* iOS 4.1- */
+}
+
+div.background {
+    background-color: #fff9f3; 
+  }
