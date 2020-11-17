@@ -21,3 +21,10 @@ services:
       - "5000:80"
     depends_on:
       - ms-sql-server
+
+  frontend:
+    build: 
+      context: .
+      dockerfile: Frontend/Dockerfile
+    ports:
+      - 4200:80

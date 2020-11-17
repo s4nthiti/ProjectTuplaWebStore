@@ -1,3 +1,14 @@
+.headerwrapper {
+    min-height: 60px;
+    width: 100%;
+    z-index: 1000;
+    &:after {
+        clear: both;
+        display: block;
+        content: '';
+    }
+}
+
 .navbar-custom { 
     background-color: #ffe8ce;
   }
