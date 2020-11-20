@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContentService.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201116202939_Initial")]
+    [Migration("20201119161652_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,12 @@ namespace ContentService.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("Birthdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -69,6 +75,9 @@ namespace ContentService.API.Migrations
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");

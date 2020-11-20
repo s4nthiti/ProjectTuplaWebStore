@@ -1,6 +1,7 @@
 import { Component, VERSION } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,8 @@ export class HomeComponent  {
   
   images = [700, 800, 807].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
-  constructor(config: NgbCarouselConfig) {
+  constructor(config: NgbCarouselConfig, private titleService:Title) {
+    this.titleService.setTitle("Welcome to Tupla");
     // customize default values of carousels used by this component tree
     config.interval = 2000;
     config.keyboard = true;

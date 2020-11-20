@@ -10,8 +10,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
-
+import { ToastrModule } from 'ngx-toastr';;
+import { AlertComponent } from './_alert/alert.component';
+import { LogoutComponent } from './logout/logout.component';
+import { JwtModule } from '@auth0/angular-jwt';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,9 @@ import { ToastrModule } from 'ngx-toastr';
     RegisterComponent,
     NavbarComponent,
     FooterComponent
-  ],
+,
+    AlertComponent ,
+    LogoutComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,6 +34,13 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot({
       progressBar: true
     }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
+        },
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

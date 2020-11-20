@@ -13,14 +13,23 @@
                 </button>
                 
                 <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="authen-button text-glowing-0" [routerLink]="['login']" routerLinkActive="active">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="authen-button text-glowing-0" [routerLink]="['register']" routerLinkActive="active">Register</a>
-                        </li>
-                    </ul>
+                    <div class="ml-auto" *ngIf="!isLoggedIn()">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="authen-button text-glowing-0" [routerLink]="['login']" routerLinkActive="active">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="authen-button text-glowing-0" [routerLink]="['register']" routerLinkActive="active">Register</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ml-auto" *ngIf="isLoggedIn()">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="authen-button text-glowing-0" [routerLink]="['logout']" routerLinkActive="active">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>

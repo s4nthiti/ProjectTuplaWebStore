@@ -19,5 +19,14 @@ namespace ContentService.API.Models.Users
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime Birthdate { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

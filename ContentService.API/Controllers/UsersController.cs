@@ -46,8 +46,9 @@ namespace ContentService.API.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             setTokenCookie(response.RefreshToken);
-
-            return Ok(response);
+            var token = response.JwtToken;
+            var refreshToken = response.RefreshToken;
+            return Ok(new { token , refreshToken });
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

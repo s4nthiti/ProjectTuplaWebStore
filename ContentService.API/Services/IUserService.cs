@@ -134,10 +134,11 @@ namespace ContentService.API.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            user.Role = Role.User;
             if (user.Username.ToLower().Contains(Role.Admin.ToLower()))
                 user.Role = Role.Admin;
-            if (user.Username.ToLower().Contains(Role.Creator.ToLower()))
-                user.Role = Role.Creator;
+            if (user.Username.ToLower().Contains(Role.Qam.ToLower()))
+                user.Role = Role.Qam;
             if (user.Username.ToLower().Contains(Role.User.ToLower()))
                 user.Role = Role.User;
 
@@ -149,7 +150,7 @@ namespace ContentService.API.Services
 
         public void Update(User userParam, string password = null)
         {
-            var user = _context.Users.Find(userParam.Id);
+            var user = _context.Users.Find(userParam.Username);
 
             if (user == null)
                 throw new AppException("User not found");
@@ -237,9 +238,12 @@ namespace ContentService.API.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim("Username", user.Username),
+                    new Claim("Firstname", user.FirstName),
+                    new Claim("Lastname", user.LastName),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
