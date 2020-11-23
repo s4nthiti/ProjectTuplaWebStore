@@ -75,8 +75,9 @@ export class AuthenticationService {
   logout() {
     if(localStorage.getItem('token') != null)
     {
+      if(!this.isTokenExpired())
+        this.alertService.success('Logout successful', { autoClose: true, keepAfterRouteChange: true });
       localStorage.removeItem('token');
-      this.alertService.success('Logout successful', { autoClose: true, keepAfterRouteChange: true });
     }
     this.router.navigate(['']);
   }
@@ -95,7 +96,14 @@ export class AuthenticationService {
   }
 
   isAuthenticated(): boolean {
-    return localStorage.getItem('token') != null && !this.isTokenExpired();
+    if(localStorage.getItem('token') == null)
+      return false;
+    if(this.isTokenExpired())
+    {
+      this.logout();
+      return false;
+    }
+    return true;
   }
   
   isTokenExpired(): boolean {

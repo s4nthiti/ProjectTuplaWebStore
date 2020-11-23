@@ -26,12 +26,14 @@ namespace ContentService.API.Controllers
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
+        private IImageService _imageService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
 
-        public UsersController(IUserService userService, IMapper mapper,IOptions<AppSettings> appSettings)
+        public UsersController(IUserService userService, IImageService imageService, IMapper mapper,IOptions<AppSettings> appSettings)
         {
             _userService = userService;
+            _imageService = imageService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
         }
@@ -167,31 +169,82 @@ namespace ContentService.API.Controllers
             return Ok(model);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateModel model)
-        {
-            // map model to entity and set id
-            var user = _mapper.Map<User>(model);
-            user.Id = id;
-
-            try
-            {
-                // update user 
-                _userService.Update(user, model.Password);
-                return Ok();
-            }
-            catch (AppException ex)
-            {
-                // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
         [Authorize(Roles = Role.Admin)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             _userService.Delete(id);
+            return Ok();
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("profile")]
+        public IActionResult GetUserProfile()
+        {
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            var user = _userService.GetById(int.Parse(userId));
+            return Ok(new
+            {
+                user.Id,
+                user.Username,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Birthdate,
+                user.PhoneNumber
+            });
+        }
+
+        [HttpPost]
+        [Route("EditProfile")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //POST : /api/UserProfile/
+        public async Task<Object> EditUserProfile([FromForm] EditProfile newData)
+        {
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            var oldData = _userService.GetById(int.Parse(userId));
+            Console.WriteLine(newData.Birthdate);
+
+            if (!oldData.Email.Equals(newData.Email) && !string.IsNullOrWhiteSpace(newData.Email))
+                oldData.Email = newData.Email;
+            if (!oldData.Username.Equals(newData.Username) && !string.IsNullOrWhiteSpace(newData.Username))
+                oldData.Username = newData.Username;
+            if (!oldData.Password.Equals(newData.Password) && !string.IsNullOrWhiteSpace(newData.Password))
+                oldData.Password = newData.Password;
+            if (!oldData.FirstName.Equals(newData.Firstname) && !string.IsNullOrWhiteSpace(newData.Firstname))
+                oldData.FirstName = newData.Firstname;
+            if (!oldData.LastName.Equals(newData.Lastname) && !string.IsNullOrWhiteSpace(newData.Lastname))
+                oldData.LastName = newData.Lastname;
+            if (!oldData.Birthdate.Equals(newData.Birthdate) && newData.Birthdate != DateTime.MinValue)
+                oldData.Birthdate = newData.Birthdate;
+            if (!oldData.PhoneNumber.Equals(newData.PhoneNumber) && !string.IsNullOrWhiteSpace(newData.PhoneNumber))
+                oldData.PhoneNumber = newData.PhoneNumber;
+            if (newData.Image != null)
+            {
+                try
+                {
+                    string subPath = "UserProfile";
+                    if (_imageService.ImageCheck(userId))
+                    {
+                        string path = _imageService.GetProfilePath(userId);
+                        _imageService.DeleteImage(path);
+                        _imageService.RemoveFromDB(userId);
+                    }
+                    string UserProfileFileName = $"UPF_{userId}_{DateTime.Now.Ticks.ToString()}.png";
+                    await _imageService.UploadImageAsync(newData.Image, subPath, UserProfileFileName);
+                    UserImage userIMG = new UserImage();
+                    userIMG.imgName = UserProfileFileName;
+                    userIMG.userId = int.Parse(userId);
+                    _imageService.AddToDB(userIMG);
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            _userService.Update(oldData);
             return Ok();
         }
     }

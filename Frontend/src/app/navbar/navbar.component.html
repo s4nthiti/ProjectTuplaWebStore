@@ -24,11 +24,20 @@
                         </ul>
                     </div>
                     <div class="ml-auto" *ngIf="isLoggedIn()">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a class="authen-button text-glowing-0" [routerLink]="['logout']" routerLinkActive="active">Logout</a>
-                            </li>
-                        </ul>
+                        <div class="collapse navbar-collapse" id="navbar-list-4">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="60" height="60" class="rounded">
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                  <a class="dropdown-item text-glowing-0" href="#">Dashboard</a>
+                                  <a class="dropdown-item text-glowing-0" href="#">Edit Profile</a>
+                                  <a class="dropdown-item text-glowing-0" [routerLink]="['logout']" routerLinkActive="active">Logout</a>
+                                </div>
+                              </li>   
+                            </ul>
+                          </div>
                     </div>
                 </div>
             </div>

@@ -25,8 +25,9 @@ namespace ContentService.API.Services
 
         IEnumerable<User> GetAll();
         User GetById(int id);
+        User GetByUsername(string username);
         User Create(User user, string password);
-        void Update(User user, string password = null);
+        void Update(User user);
         void Delete(int id);
         
     }
@@ -119,6 +120,11 @@ namespace ContentService.API.Services
             return _context.Users.Find(id);
         }
 
+        public User GetByUsername(string username)
+        {
+            return _context.Users.Find(username);
+        }
+
         public User Create(User user, string password)
         {
             // validation
@@ -148,41 +154,9 @@ namespace ContentService.API.Services
             return user;
         }
 
-        public void Update(User userParam, string password = null)
+        public void Update(User userParam)
         {
-            var user = _context.Users.Find(userParam.Username);
-
-            if (user == null)
-                throw new AppException("User not found");
-
-            // update username if it has changed
-            if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != user.Username)
-            {
-                // throw error if the new username is already taken
-                if (_context.Users.Any(x => x.Username == userParam.Username))
-                    throw new AppException("Username " + userParam.Username + " is already taken");
-
-                user.Username = userParam.Username;
-            }
-
-            // update user properties if provided
-            if (!string.IsNullOrWhiteSpace(userParam.FirstName))
-                user.FirstName = userParam.FirstName;
-
-            if (!string.IsNullOrWhiteSpace(userParam.LastName))
-                user.LastName = userParam.LastName;
-
-            // update password if provided
-            if (!string.IsNullOrWhiteSpace(password))
-            {
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
-            }
-
-            _context.Users.Update(user);
+            _context.Users.Update(userParam);
             _context.SaveChanges();
         }
 
@@ -243,7 +217,7 @@ namespace ContentService.API.Services
                     new Claim("Lastname", user.LastName),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

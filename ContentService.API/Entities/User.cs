@@ -35,5 +35,7 @@ namespace ContentService.API.Entities
 
         [JsonIgnore]
         public List<RefreshToken> RefreshTokens { get; set; }
+        [JsonIgnore]
+        public List<UserImage> UserImages { get; set; }
     }
 }
