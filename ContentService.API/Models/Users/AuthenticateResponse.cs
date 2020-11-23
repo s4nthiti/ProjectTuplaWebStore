@@ -13,7 +13,10 @@ namespace ContentService.API.Models.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
-        public string JwtToken { get; set; }
+        public string Email { get; set; }
+        public DateTime Birthdate { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Token { get; set; }
 
         [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
@@ -24,7 +27,10 @@ namespace ContentService.API.Models.Users
             FirstName = user.FirstName;
             LastName = user.LastName;
             Username = user.Username;
-            JwtToken = jwtToken;
+            Email = user.Email;
+            Birthdate = user.Birthdate;
+            PhoneNumber = user.PhoneNumber;
+            Token = jwtToken;
             RefreshToken = refreshToken;
         }
     }

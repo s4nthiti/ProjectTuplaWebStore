@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertService } from '../_alert/alert.service';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -11,24 +10,28 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class NavbarComponent{
   loading = false;
   private isLoggedin!: boolean;
+  userProfileImg: any;
   
   constructor(public service: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute) { }
 
-  onLogout() {
-    this.service.logout();
-  }
+    ngOnInit() {
 
-  isLoggedIn() {
-    if (localStorage.getItem('token') == null)
-    {
-      this.isLoggedin = false;
-      return this.isLoggedin;
     }
-    else {
-      return true;
-    }
-  }
 
+    onLogout() {
+      this.service.logout();
+    }
+
+    isLoggedIn() {
+      if (localStorage.getItem('token') == null)
+      {
+        this.isLoggedin = false;
+        return this.isLoggedin;
+      }
+      else {
+        return true;
+      }
+    }
 }

@@ -48,9 +48,19 @@ namespace ContentService.API.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             setTokenCookie(response.RefreshToken);
-            var token = response.JwtToken;
-            var refreshToken = response.RefreshToken;
-            return Ok(new { token , refreshToken });
+            var imagePath = _imageService.GetProfilePath(response.Id.ToString());
+            string userIMG = $"http://localhost:5000/{imagePath}";
+            return Ok(new { 
+                response.Id,
+                response.FirstName,
+                response.LastName,
+                response.Username,
+                response.Email,
+                response.Birthdate,
+                response.PhoneNumber,
+                response.Token,
+                userIMG
+            });
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -184,6 +194,8 @@ namespace ContentService.API.Controllers
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
             var user = _userService.GetById(int.Parse(userId));
+            var imagePath = _imageService.GetProfilePath(userId);
+            string userIMG = $"http://localhost:5000/{imagePath}";
             return Ok(new
             {
                 user.Id,
@@ -192,7 +204,8 @@ namespace ContentService.API.Controllers
                 user.LastName,
                 user.Email,
                 user.Birthdate,
-                user.PhoneNumber
+                user.PhoneNumber,
+                userIMG
             });
         }
 

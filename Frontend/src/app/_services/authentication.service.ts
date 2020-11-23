@@ -6,18 +6,20 @@ import { User } from '../_models/User';
 import { Router } from '@angular/router';
 import { AlertService } from '../_alert/alert.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Profile } from '../_models/Profile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   private currentUserSubject!: BehaviorSubject<User>;
-  public currentUser!: Observable<User>;
+  public currentUser!: Profile;
 
   constructor(public jwtHelper: JwtHelperService,private fb: FormBuilder, private http: HttpClient,private router: Router,private alertService: AlertService) { }
   readonly BaseURI = 'http://localhost:5000/';
   readonly RegisterURL = 'users/register';
   readonly LoginURL = 'users/login';
+  readonly ProfileURL = 'users/profile';
 
   loginModel = this.fb.group({
     UserName: ['', Validators.required],
@@ -111,6 +113,13 @@ export class AuthenticationService {
     const token = JSON.stringify(getToken);
     console.log("Token " + this.jwtHelper.isTokenExpired(token));
     return this.jwtHelper.isTokenExpired(token);
+  }
+
+  getUserProfile():Observable<Profile> {
+    var tokenHeader = new HttpHeaders({ 'Autorization': 'Bearer' + localStorage.getItem('token') })
+    console.log(tokenHeader);
+    console.log("Token " + localStorage.getItem('token'));
+    return this.http.get<Profile>(this.BaseURI + this.ProfileURL, { headers: tokenHeader });
   }
 
 }

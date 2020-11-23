@@ -13,6 +13,7 @@ using ContentService.API.Helpers;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 
 namespace ContentService.API
 {
@@ -89,6 +90,16 @@ namespace ContentService.API
             dataContext.Database.Migrate();
 
             app.UseRouting();
+
+            const string cacheMaxAge = "604800";
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Append(
+                        "Cache-Control", $"public, max-age={cacheMaxAge}");
+                }
+            });
 
             // global cors policy
             app.UseCors(x => x
