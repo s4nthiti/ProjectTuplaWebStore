@@ -78,7 +78,9 @@ namespace ContentService.API.Services
         public string GetProfilePath(string userID)
         {
             var user = _context.UserImages.Where(a => a.userId == int.Parse(userID)).FirstOrDefault();
-            string path = $"Images/UserProfile/{user.imgName}";
+            string path = "";
+            if (user != null)
+                path = $"Images/UserProfile/{user.imgName}";
             return path;
         }
 

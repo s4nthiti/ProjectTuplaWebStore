@@ -9,11 +9,16 @@ import { RegisterComponent } from './register/register.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';;
 import { AlertComponent } from './_alert/alert.component';
 import { LogoutComponent } from './logout/logout.component';
-import { JwtModule } from '@auth0/angular-jwt';
+import { JwtModule } from '@auth0/angular-jwt';;
+import { ProfileComponent } from './profile/profile.component'
+import { DatePipe } from '@angular/common';;
+import { EditprofileComponent } from './profile/editprofile/editprofile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material-module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,15 +26,18 @@ import { JwtModule } from '@auth0/angular-jwt';
     LoginComponent,
     RegisterComponent,
     NavbarComponent,
-    FooterComponent
-,
-    AlertComponent ,
-    LogoutComponent ],
+    FooterComponent,
+    AlertComponent,
+    LogoutComponent,
+    ProfileComponent,
+    EditprofileComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     NgbModule,
     ToastrModule.forRoot({
       progressBar: true
@@ -37,12 +45,14 @@ import { JwtModule } from '@auth0/angular-jwt';
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return localStorage.getItem('access_token');
+          return localStorage.getItem('token');
         },
       }
-    })
+    }),
+    BrowserAnimationsModule,
+    MaterialModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

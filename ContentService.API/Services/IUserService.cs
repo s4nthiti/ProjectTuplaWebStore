@@ -35,11 +35,13 @@ namespace ContentService.API.Services
     public class UserService : IUserService
     {
         private DataContext _context;
+        private IImageService _imageService;
         private readonly AppSettings _appSettings;
 
-        public UserService(DataContext context, IOptions<AppSettings> appSettings)
+        public UserService(DataContext context, IImageService imageService, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _imageService = imageService;
             _appSettings = appSettings.Value;
         }
 
@@ -48,7 +50,11 @@ namespace ContentService.API.Services
             var user = _context.Users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
 
             // return null if user not found
-            if (user == null) return null;
+            if (user == null) 
+                return null;
+
+            if (!VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
+                return null;
 
             // authentication successful so generate jwt and refresh tokens
             var jwtToken = generateJwtToken(user);
@@ -207,6 +213,16 @@ namespace ContentService.API.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var imagePath = _imageService.GetProfilePath(user.Id.ToString());
+            string userIMG = "";
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                userIMG = $"http://localhost:5000/{imagePath}";
+            }
+            else
+            {
+                userIMG = $"http://localhost:5000/Images/Assets/user-demo.jpg";
+            }
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -215,6 +231,10 @@ namespace ContentService.API.Services
                     new Claim("Username", user.Username),
                     new Claim("Firstname", user.FirstName),
                     new Claim("Lastname", user.LastName),
+                    new Claim("Email", user.Email),
+                    new Claim("BirthDate", user.Birthdate.ToString()),
+                    new Claim("PhoneNumber", user.PhoneNumber),
+                    new Claim("UserIMG", userIMG),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(10),

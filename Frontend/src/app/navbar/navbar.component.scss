@@ -16,7 +16,7 @@
   .text-glowing-0:hover {color: #ff9a26;}
   
   .navbar {
-    min-height: 100px;
+    min-height: 120px;
   }
   
   .navbar-brand {
@@ -58,3 +58,95 @@
     font-weight: bold;
     font-family:"Pastel W01 Regular" !important;
   }
+
+  @media (min-width: 992px) {
+    .navbar-expand .navbar-collapse {
+      display: flex !important;
+    }
+  }
+
+  /*Sidenav*/
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  background-color: #252525;
+  overflow-x: hidden;
+  transition: 0.5s;
+  box-shadow: 0 4px 8px -3px #555454;
+  padding-top: 0px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  color: #fff;        
+}
+
+@media screen and (max-height: 450px) {
+.sidenav a {font-size: 18px;}
+}
+
+.sidenav-heading{
+  font-size: 36px;
+  color: #fff;
+}
+
+.toggle-button {
+	box-shadow: 0px 0px 0px 2px #ffd6ad;
+	background-color:transparent;
+	border-radius:10px;
+	border:1px solid #ffdcb7;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffd6aa;
+	padding:10px 20px;
+	text-decoration:none;
+}
+.toggle-button:hover {
+	background-color:transparent;
+}
+.toggle-button:active {
+	position:relative;
+  top:1px;
+  color:#ffbb73;
+}
+
+.sidebar-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 500px;
+}
+
+.name-overflow {
+  white-space: nowrap;
+  /* width: 16em; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.name-overflow:hover {
+  overflow: visible;
+}
+
+.image-profile {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

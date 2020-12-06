@@ -1,6 +1,6 @@
 <div class="container-fluid background">
     <div class="container">
-        <h4>Sign In</h4>
+        <h1>Sign In</h1>
         <div>
             <form [formGroup]="service.loginModel" (ngSubmit)="onSubmit()">
                 <div class="form-group">
@@ -18,11 +18,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button [disabled]="loading" class="btn btn-primary">
+                    <button [disabled]="loading" class="btn btn-primary my-button">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                         Login
                     </button>
-                    <a routerLink="../register" class="btn btn-link">Register</a>
+                    <a routerLink="../register" class="btn btn-link orange-text">Register</a>
                 </div>
             </form>
         </div>

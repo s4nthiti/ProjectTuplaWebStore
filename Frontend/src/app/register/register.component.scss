@@ -5,13 +5,19 @@
     padding-bottom: 40px;
 }
 
-.my-button {
-    background-color:#ffb866;
-    border: 1px solid #ffac4d;
+.orange-text {
+    color: #ff9b29;
 }
 
-.my-button-text-color {
-    color:rgb(0, 0, 0);
-    font-size:16px;
-    letter-spacing:1px;
+.my-button {
+    background-color:#ffb158;
+    border: 1px solid rgb(255, 146, 21);
+}
+
+.my-button:hover {
+	background-color:#ff9b29;
+}
+.my-button:active {
+	position:relative;
+	top:1px;
 }

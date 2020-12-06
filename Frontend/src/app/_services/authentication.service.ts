@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { AlertService } from '../_alert/alert.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Profile } from '../_models/Profile';
+import { DatePipe } from '@angular/common';
+import { catchError, map, retry } from 'rxjs/operators';
+import { AuthUser } from '../_models/AuthUser';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +17,20 @@ import { Profile } from '../_models/Profile';
 export class AuthenticationService {
   private currentUserSubject!: BehaviorSubject<User>;
   public currentUser!: Profile;
+  userToken: any;
+  decodeToken: any;
 
-  constructor(public jwtHelper: JwtHelperService,private fb: FormBuilder, private http: HttpClient,private router: Router,private alertService: AlertService) { }
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8'
+    })};
+
+  constructor(private jwtHelper: JwtHelperService,private fb: FormBuilder, private http: HttpClient,private router: Router,private alertService: AlertService,private datePipe: DatePipe) { }
   readonly BaseURI = 'http://localhost:5000/';
   readonly RegisterURL = 'users/register';
   readonly LoginURL = 'users/login';
   readonly ProfileURL = 'users/profile';
+  readonly EditProfileURL = 'users/editprofile';
 
   loginModel = this.fb.group({
     UserName: ['', Validators.required],
@@ -71,18 +82,26 @@ export class AuthenticationService {
       Password: this.loginModel.value.Password
     };
     console.log(body);
-    return this.http.post(this.BaseURI + this.LoginURL, body);
-  }
+    return this.http.post<AuthUser>(this.BaseURI + this.LoginURL, body, { headers: new HttpHeaders()
+      .set('Content-Type', 'application/json') })
+      .pipe(map(user => {
+      if (user) {
+          localStorage.setItem('token', user.token);
+          this.decodeToken = this.jwtHelper.decodeToken(user.token);   // <--- Added
+          this.userToken = user.token;
+      }
+      }));
+    }
 
   logout() {
-    if(localStorage.getItem('token') != null)
-    {
-      if(!this.isTokenExpired())
-        this.alertService.success('Logout successful', { autoClose: true, keepAfterRouteChange: true });
-      localStorage.removeItem('token');
+      if(localStorage.getItem('token') != null)
+      {
+        if(!this.isTokenExpired())
+          this.alertService.success('Logout successful', { autoClose: true, keepAfterRouteChange: true });
+        localStorage.removeItem('token');
+      }
+      this.router.navigate(['']);
     }
-    this.router.navigate(['']);
-  }
 
   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
     let errorMessage = '';
@@ -116,10 +135,28 @@ export class AuthenticationService {
   }
 
   getUserProfile():Observable<Profile> {
-    var tokenHeader = new HttpHeaders({ 'Autorization': 'Bearer' + localStorage.getItem('token') })
-    console.log(tokenHeader);
-    console.log("Token " + localStorage.getItem('token'));
-    return this.http.get<Profile>(this.BaseURI + this.ProfileURL, { headers: tokenHeader });
+    return this.http.get<Profile>(this.BaseURI + this.ProfileURL, this.httpOptions);
+  }
+
+  transformDate(birthdate: Date)
+  {
+    return this.datePipe.transform(birthdate, 'yyyy-MM-dd');
+  }
+
+  updateProfile(data: any){
+    return this.http.post(this.BaseURI + this.EditProfileURL, data, this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandler)
+    );
+  }
+
+  loggedIn() {
+    const token = this.jwtHelper.tokenGetter();
+    if (!token) {
+        return false;
+    }
+    return !this.jwtHelper.isTokenExpired(token);
   }
 
 }

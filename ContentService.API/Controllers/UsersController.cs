@@ -49,17 +49,13 @@ namespace ContentService.API.Controllers
 
             setTokenCookie(response.RefreshToken);
             var imagePath = _imageService.GetProfilePath(response.Id.ToString());
-            string userIMG = $"http://localhost:5000/{imagePath}";
+            string userIMG = "";
+            if(!string.IsNullOrEmpty(imagePath))
+            {
+                userIMG = $"http://localhost:5000/{imagePath}";
+            }
             return Ok(new { 
-                response.Id,
-                response.FirstName,
-                response.LastName,
-                response.Username,
-                response.Email,
-                response.Birthdate,
-                response.PhoneNumber,
-                response.Token,
-                userIMG
+                response.Token
             });
         }
 
@@ -195,7 +191,11 @@ namespace ContentService.API.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
             var user = _userService.GetById(int.Parse(userId));
             var imagePath = _imageService.GetProfilePath(userId);
-            string userIMG = $"http://localhost:5000/{imagePath}";
+            string userIMG = "";
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                userIMG = $"http://localhost:5000/{imagePath}";
+            }
             return Ok(new
             {
                 user.Id,

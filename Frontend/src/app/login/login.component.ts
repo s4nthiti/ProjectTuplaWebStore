@@ -42,11 +42,7 @@ export class LoginComponent implements OnInit {
       }
 
       this.loading = true;
-      this.service.login().subscribe((res: any) => {
-          localStorage.setItem('token', res.token);
-          this.service.currentUser = res;
-          console.log(res.refreshToken);
-          this.cookieService.set('refreshToken', res.refreshToken);
+      this.service.login().subscribe(data => {
           this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
           this.router.navigate(['../'], { relativeTo: this.route });
         },

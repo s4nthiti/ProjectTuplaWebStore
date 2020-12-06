@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Profile } from '../_models/Profile';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -10,9 +11,9 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class NavbarComponent{
   loading = false;
   private isLoggedin!: boolean;
-  userProfileImg: any;
+  toggle = false;
   
-  constructor(public service: AuthenticationService,
+  constructor(public authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -21,17 +22,26 @@ export class NavbarComponent{
     }
 
     onLogout() {
-      this.service.logout();
+      this.authService.userToken = null;
+      this.authService.logout();
     }
 
     isLoggedIn() {
-      if (localStorage.getItem('token') == null)
+      return this.authService.loggedIn();
+    }
+
+    toggleNav() {
+      if(!this.toggle)
       {
-        this.isLoggedin = false;
-        return this.isLoggedin;
+        this.toggle = true;
+        document.getElementById("mySidenav")!.style.width = "30%";
+        document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
       }
-      else {
-        return true;
+      else
+      {
+        this.toggle = false;
+        document.getElementById("mySidenav")!.style.width = "0";
+        document.body.style.backgroundColor = "rgba(0,0,0,0)";
       }
     }
 }

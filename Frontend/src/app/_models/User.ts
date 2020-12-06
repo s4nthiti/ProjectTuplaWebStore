@@ -9,5 +9,4 @@ export class User {
     phoneNumber: any;
     imgProfileUrl: any;
     role!: Role;
-    token?: string;
 }

@@ -1,0 +1,70 @@
+<div class="container" style="padding-top: 2%;">
+    <div class="card" style="background-color: #fff9f3;">
+      <div class="card-header">
+        <h4 style="text-align: center;">User Profile</h4>
+      </div>
+      <div class="card-body">
+        <picture>
+          <img (click)="showImgProfile()" id="imgprofile" class="card-img-top rounded" *ngIf="service.decodeToken?.UserIMG==null" [src]="userProfilePreview">
+          <img (click)="showImgProfile()" id="imgprofile" class="card-img-top rounded" *ngIf="service.decodeToken?.UserIMG!=null" [src]="service.decodeToken?.UserIMG">
+        </picture>
+        <div class="container" style="padding: 5% ;">
+  
+          <div class="form-group row">
+            <div class="from-group col">
+              <label for="Username">Username</label>
+              <input value={{service.decodeToken?.Username}} class="form-control" readonly>
+            </div>
+            <div class="from-group col">
+              <label for="Email">Email</label>
+              <input value={{service.decodeToken?.Email}} class="form-control" readonly>
+            </div>
+          </div>
+  
+          <div class="form-group row">
+            <div class="from-group col">
+              <label for="FirstName">First Name</label>
+              <input value={{service.decodeToken?.Firstname}} class="form-control" readonly>
+            </div>
+            <div class="from-group col">
+              <label for="FirstName">Last Name</label>
+              <input value={{service.decodeToken?.Lastname}} class="form-control" readonly>
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <div class="from-group col">
+              <label for="BirthDate">Birthdate</label>
+              <input value={{service.transformDate(service.decodeToken?.BirthDate)}} class="form-control" readonly>
+            </div>
+            <div class="from-group col">
+              <label for="ContactNo">Contact Number</label>
+                <input value={{service.decodeToken?.PhoneNumber}} class="form-control" readonly>
+            </div>
+          </div>
+  
+          <div class="container">
+            <button class="btn btn-primary float-right my-button" [routerLink]="['../editprofile']" routerLinkActive="active">Edit User Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div [style.display]="showModal ? 'block' : 'none'" class="modal" id="imagemodal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Profile Image</h4>
+          </div>
+          <picture>
+            <img id="imgmodal" class="img-fluid"  *ngIf="service.decodeToken?.UserIMG==null" [src]="userProfilePreview">
+            <img id="imgmodal" class="img-fluid" *ngIf="service.decodeToken?.UserIMG==null!=null" [src]="service.decodeToken?.UserIMG" >
+        </picture>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hide()">Close</button>
+          </div>
+      </div>
+  </div>
+  </div>
