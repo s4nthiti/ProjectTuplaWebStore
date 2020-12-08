@@ -54,7 +54,19 @@ namespace ContentService.API.Controllers
             {
                 userIMG = $"http://localhost:5000/{imagePath}";
             }
-            return Ok(new { 
+            var user = new
+            {
+                response.Id,
+                response.Username,
+                response.FirstName,
+                response.LastName,
+                response.Email,
+                response.Birthdate,
+                response.PhoneNumber,
+                userIMG
+            };
+            return Ok(new {
+                user,
                 response.Token
             });
         }

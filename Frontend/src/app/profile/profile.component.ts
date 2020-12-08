@@ -11,7 +11,6 @@ export class ProfileComponent implements OnInit {
   
   userDetails: any;
   userProfileImg: any;
-  //userProfileImg: string = 'assets/images/Capture.PNG';
   userProfilePreview: string = 'assets/images/user-demo.jpg';
   showModal!: boolean;
   showDeclineModal!: boolean;
@@ -19,15 +18,15 @@ export class ProfileComponent implements OnInit {
   {}
 
   ngOnInit() {
-
+    this.loadUserProfile();
   }
 
   loadUserProfile() {
     this.service.getUserProfile().subscribe(
       res => {
         this.userDetails = res;
-        this.userProfileImg = res.userIMG;
-        console.log(res.userIMG)
+        if(res.userIMG)
+          this.userProfileImg = res.userIMG;
       },
       err => {
         console.log(err);

@@ -12,13 +12,14 @@ export class NavbarComponent{
   loading = false;
   private isLoggedin!: boolean;
   toggle = false;
+  userProfileIMG: any;
+  userDetails: any;
   
   constructor(public authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute) { }
 
     ngOnInit() {
-
     }
 
     onLogout() {
@@ -43,5 +44,11 @@ export class NavbarComponent{
         document.getElementById("mySidenav")!.style.width = "0";
         document.body.style.backgroundColor = "rgba(0,0,0,0)";
       }
+    }
+
+    closeNav() {
+      this.toggle = false;
+        document.getElementById("mySidenav")!.style.width = "0";
+        document.body.style.backgroundColor = "rgba(0,0,0,0)";
     }
 }

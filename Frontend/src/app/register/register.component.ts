@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
       this.service.formModel.reset();
-      console.log(this.maxDate);
   }
 
   // convenience getter for easy access to form fields

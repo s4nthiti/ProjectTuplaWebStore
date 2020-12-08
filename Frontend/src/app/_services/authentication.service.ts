@@ -16,7 +16,7 @@ import { AuthUser } from '../_models/AuthUser';
 })
 export class AuthenticationService {
   private currentUserSubject!: BehaviorSubject<User>;
-  public currentUser!: Profile;
+  public currentUser!: User;
   userToken: any;
   decodeToken: any;
 
@@ -71,10 +71,6 @@ export class AuthenticationService {
     console.log(body);
     return this.http.post(this.BaseURI + this.RegisterURL , body);
   }
-
-  public get currentUserValue(): User {
-    return this.currentUserSubject.value;
-  }
   
   login() {
     var body = {
@@ -87,7 +83,11 @@ export class AuthenticationService {
       .pipe(map(user => {
       if (user) {
           localStorage.setItem('token', user.token);
+          localStorage.setItem('user', JSON.stringify(user.user));
           this.decodeToken = this.jwtHelper.decodeToken(user.token);   // <--- Added
+          this.currentUser = user.user;
+          if(!user.user.userIMG)
+            this.currentUser.userIMG = 'assets/images/user-demo.jpg';
           this.userToken = user.token;
       }
       }));
@@ -99,6 +99,7 @@ export class AuthenticationService {
         if(!this.isTokenExpired())
           this.alertService.success('Logout successful', { autoClose: true, keepAfterRouteChange: true });
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
       }
       this.router.navigate(['']);
     }
@@ -134,8 +135,12 @@ export class AuthenticationService {
     return this.jwtHelper.isTokenExpired(token);
   }
 
-  getUserProfile():Observable<Profile> {
-    return this.http.get<Profile>(this.BaseURI + this.ProfileURL, this.httpOptions);
+  getUserProfile():Observable<User> {
+    var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token')});
+    return this.http.get<User>(this.BaseURI + this.ProfileURL, { headers: tokenHeader })
+    .pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   transformDate(birthdate: Date)
@@ -144,9 +149,9 @@ export class AuthenticationService {
   }
 
   updateProfile(data: any){
-    return this.http.post(this.BaseURI + this.EditProfileURL, data, this.httpOptions)
+    var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token')});
+    return this.http.post(this.BaseURI + this.EditProfileURL, data, { headers: tokenHeader })
       .pipe(
-        retry(1),
         catchError(this.errorHandler)
     );
   }

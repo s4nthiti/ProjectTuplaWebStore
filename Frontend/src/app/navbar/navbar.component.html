@@ -10,10 +10,10 @@
                 <div class="ml-auto" *ngIf="!isLoggedIn()">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="authen-button text-glowing-0" [routerLink]="['login']" routerLinkActive="active">Login</a>
+                            <a class="authen-button text-glowing-0" (click)="closeNav()" [routerLink]="['login']" routerLinkActive="active">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="authen-button text-glowing-0" [routerLink]="['register']" routerLinkActive="active">Register</a>
+                            <a class="authen-button text-glowing-0" (click)="closeNav()" [routerLink]="['register']" routerLinkActive="active">Register</a>
                         </li>
                     </ul>
                 </div>
@@ -30,12 +30,11 @@
             <div id="mySidenav" class="sidenav">
                 <div class="sidebar-box" style="padding-top: 20px; height: auto;">
                     <div>
-                        <img class="rounded image-profile" [src]="authService.decodeToken?.UserIMG" width="100px">
-                        <a class="name-overflow">{{authService.decodeToken?.Firstname + ' ' + authService.decodeToken?.Lastname}}</a>
+                        <img class="rounded image-profile" [src]="authService.currentUser?.userIMG" width="100px">
+                        <a class="name-overflow" style="padding-top: 20px;">{{authService.currentUser?.firstName + ' ' + authService.currentUser?.lastName}}</a>
                     </div>
-                    <a class="tupla-logo">Link</a>
-                    <a class="tupla-logo">Link</a>
-                    <a class="tupla-logo">Link</a>
+                    <a class="dropdown-item text-glowing-0 fa fa-user" (click)="closeNav()" [routerLink]="['profile']" routerLinkActive="active">&nbsp;&nbsp;Profile</a>
+                    <a class="dropdown-item text-glowing-0 fa fa-sign-out" (click)="closeNav()" [routerLink]="['logout']" routerLinkActive="active">&nbsp;Logout</a>
                 </div>
             </div>
         </nav>

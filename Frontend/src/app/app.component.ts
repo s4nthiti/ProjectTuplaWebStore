@@ -22,5 +22,9 @@ export class AppComponent {
     if (token) {
       this._authService.decodeToken = this._jwtHelperService.decodeToken(token);
     }
+
+    if (user) {
+      this._authService.currentUser = user;
+  }
   }
 }
