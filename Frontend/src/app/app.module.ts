@@ -18,7 +18,10 @@ import { ProfileComponent } from './profile/profile.component'
 import { DatePipe } from '@angular/common';;
 import { EditprofileComponent } from './profile/editprofile/editprofile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material-module';
+import { MaterialModule } from './material-module';;
+import { PublisherRegisterComponent } from './publisher-register/publisher-register.component';
+import { VerifyPublisherComponent } from './admin/verify-publisher/verify-publisher.component';;
+import { PublisherRequestComponent } from './admin/publisher-request/publisher-request.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,8 +33,10 @@ import { MaterialModule } from './material-module';
     AlertComponent,
     LogoutComponent,
     ProfileComponent,
-    EditprofileComponent
-  ],
+    EditprofileComponent,
+    PublisherRegisterComponent,
+    VerifyPublisherComponent,
+    PublisherRequestComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

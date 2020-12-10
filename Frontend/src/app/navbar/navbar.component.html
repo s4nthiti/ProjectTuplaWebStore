@@ -30,10 +30,15 @@
             <div id="mySidenav" class="sidenav">
                 <div class="sidebar-box" style="padding-top: 20px; height: auto;">
                     <div>
-                        <img class="rounded image-profile" [src]="authService.currentUser?.userIMG" width="100px">
-                        <a class="name-overflow" style="padding-top: 20px;">{{authService.currentUser?.firstName + ' ' + authService.currentUser?.lastName}}</a>
+                        <img class="rounded image-profile" [src]="authService.currentUser?.userIMG">
                     </div>
+                    <a class="name-overflow" style="padding-top: 20px;">{{authService.currentUser?.firstName + ' ' + authService.currentUser?.lastName}}
+                        <a style="font-size: 12px; color: #2ddf00;">({{authService.userRole}})</a>
+                    </a>
+                    <a class="dropdown-item text-glowing-0 fa fa-home" (click)="closeNav()" [routerLink]="['home']" routerLinkActive="active">&nbsp;Home</a>
                     <a class="dropdown-item text-glowing-0 fa fa-user" (click)="closeNav()" [routerLink]="['profile']" routerLinkActive="active">&nbsp;&nbsp;Profile</a>
+                    <a class="dropdown-item text-glowing-0 fa fa-industry" *ngIf="isUser()" (click)="closeNav()" [routerLink]="['publisher-register']" routerLinkActive="active">&nbsp;Publisher Register</a>
+                    <a class="dropdown-item text-glowing-0 fa fa-search" *ngIf="isAdmin()" (click)="closeNav()" [routerLink]="['admin/publisher-request']" routerLinkActive="active">&nbsp;Publisher Request</a>
                     <a class="dropdown-item text-glowing-0 fa fa-sign-out" (click)="closeNav()" [routerLink]="['logout']" routerLinkActive="active">&nbsp;Logout</a>
                 </div>
             </div>

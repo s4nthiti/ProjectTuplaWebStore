@@ -17,6 +17,7 @@ import { AuthUser } from '../_models/AuthUser';
 export class AuthenticationService {
   private currentUserSubject!: BehaviorSubject<User>;
   public currentUser!: User;
+  userRole: any;
   userToken: any;
   decodeToken: any;
 
@@ -77,18 +78,19 @@ export class AuthenticationService {
       UserName: this.loginModel.value.UserName,
       Password: this.loginModel.value.Password
     };
-    console.log(body);
     return this.http.post<AuthUser>(this.BaseURI + this.LoginURL, body, { headers: new HttpHeaders()
       .set('Content-Type', 'application/json') })
       .pipe(map(user => {
       if (user) {
           localStorage.setItem('token', user.token);
-          localStorage.setItem('user', JSON.stringify(user.user));
+          localStorage.setItem('role', user.user.role);
           this.decodeToken = this.jwtHelper.decodeToken(user.token);   // <--- Added
           this.currentUser = user.user;
           if(!user.user.userIMG)
             this.currentUser.userIMG = 'assets/images/user-demo.jpg';
+          localStorage.setItem('user', JSON.stringify(user.user));
           this.userToken = user.token;
+          this.userRole = user.user.role;
       }
       }));
     }
@@ -100,6 +102,7 @@ export class AuthenticationService {
           this.alertService.success('Logout successful', { autoClose: true, keepAfterRouteChange: true });
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('role');
       }
       this.router.navigate(['']);
     }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContentService.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201123014524_Initial")]
+    [Migration("20201210152709_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,69 @@ namespace ContentService.API.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ContentService.API.Entities.IdentityCard", b =>
+                {
+                    b.Property<string>("imgId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("imgName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("imgId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("IdentityCards");
+                });
+
+            modelBuilder.Entity("ContentService.API.Entities.Publisher", b =>
+                {
+                    b.Property<int>("publisherId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("city")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("postal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("publisherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("state")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("streetAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("verify")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("verifyBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("verifyDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("publisherId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Publishers");
+                });
 
             modelBuilder.Entity("ContentService.API.Entities.User", b =>
                 {
@@ -86,6 +149,24 @@ namespace ContentService.API.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("UserImages");
+                });
+
+            modelBuilder.Entity("ContentService.API.Entities.IdentityCard", b =>
+                {
+                    b.HasOne("ContentService.API.Entities.User", "User")
+                        .WithMany("IdentityCards")
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContentService.API.Entities.Publisher", b =>
+                {
+                    b.HasOne("ContentService.API.Entities.User", "User")
+                        .WithMany("Publishers")
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ContentService.API.Entities.User", b =>

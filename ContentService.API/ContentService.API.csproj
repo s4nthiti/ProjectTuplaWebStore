@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\Assets\" />
+    <Folder Include="wwwroot\Images\IdentityCard\" />
+    <Folder Include="wwwroot\Images\UserProfile\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/BizTalkServerApplicationSchema" /></VisualStudio></ProjectExtensions>

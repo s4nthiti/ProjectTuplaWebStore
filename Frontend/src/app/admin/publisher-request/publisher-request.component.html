@@ -1,0 +1,23 @@
+<div class="container">
+
+    <h1>Publisher On Verify List</h1>
+  
+    <p *ngIf="!(RequestList$ | async)"><em>Loading...</em></p>
+  
+    <table class="table table-sm table-hover table-light table-responsive-sm ">
+      <thead class="thead-light">
+        <tr>
+          <th>Publisher ID</th>
+          <th>Publisher Name</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr [routerLink]="['../verify-publisher/',Request.publisherId]" *ngFor="let Request of (RequestList$ | async)">
+        <td>{{ Request.publisherId }}</td>
+        <td>{{ Request.publisherName }}</td>
+
+        <!-- <td><a [routerLink]="" (click)="delete(Trip.TripId)" class="btn btn-danger btn-sm float-right">Delete</a></td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>

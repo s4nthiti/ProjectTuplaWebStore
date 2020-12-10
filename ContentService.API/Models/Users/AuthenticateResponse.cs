@@ -17,6 +17,7 @@ namespace ContentService.API.Models.Users
         public DateTime Birthdate { get; set; }
         public string PhoneNumber { get; set; }
         public string Token { get; set; }
+        public string Role { get; set; }
 
         [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
@@ -31,6 +32,7 @@ namespace ContentService.API.Models.Users
             Birthdate = user.Birthdate;
             PhoneNumber = user.PhoneNumber;
             Token = jwtToken;
+            Role = user.Role;
             RefreshToken = refreshToken;
         }
     }

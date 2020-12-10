@@ -81,6 +81,7 @@ namespace ContentService.API
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IPublisherService, PublisherService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -28,6 +28,7 @@ namespace ContentService.API.Services
         User GetByUsername(string username);
         User Create(User user, string password);
         void Update(User user);
+        Task UpdateAsync(User userParam);
         void Delete(int id);
         
     }
@@ -166,6 +167,12 @@ namespace ContentService.API.Services
             _context.SaveChanges();
         }
 
+        public async Task UpdateAsync(User userParam)
+        {
+            _context.Users.Update(userParam);
+            await _context.SaveChangesAsync();
+        }
+
         public void Delete(int id)
         {
             var user = _context.Users.Find(id);
@@ -237,7 +244,7 @@ namespace ContentService.API.Services
                     new Claim("UserIMG", userIMG),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -253,7 +260,7 @@ namespace ContentService.API.Services
                 return new RefreshToken
                 {
                     Token = Convert.ToBase64String(randomBytes),
-                    Expires = DateTime.UtcNow.AddDays(7),
+                    Expires = DateTime.UtcNow.AddDays(1),
                     Created = DateTime.UtcNow,
                     CreatedByIp = ipAddress
                 };

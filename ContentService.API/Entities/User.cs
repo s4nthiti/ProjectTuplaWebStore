@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -33,9 +34,17 @@ namespace ContentService.API.Entities
         [JsonIgnore]
         public string Password { get; set; }
 
-        [JsonIgnore]
-        public List<RefreshToken> RefreshTokens { get; set; }
-        [JsonIgnore]
-        public List<UserImage> UserImages { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<UserImage> UserImages { get; set; }
+        public ICollection<Publisher> Publishers { get; set; }
+        public ICollection<IdentityCard> IdentityCards { get; set; }
+
+        public User()
+        {
+            RefreshTokens = new Collection<RefreshToken>();
+            UserImages = new Collection<UserImage>();
+            Publishers = new Collection<Publisher>();
+            IdentityCards = new Collection<IdentityCard>();
+        }
     }
 }

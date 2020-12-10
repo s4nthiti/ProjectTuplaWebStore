@@ -63,6 +63,7 @@ namespace ContentService.API.Controllers
                 response.Email,
                 response.Birthdate,
                 response.PhoneNumber,
+                response.Role,
                 userIMG
             };
             return Ok(new {
@@ -230,8 +231,6 @@ namespace ContentService.API.Controllers
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
             var oldData = _userService.GetById(int.Parse(userId));
-            Console.WriteLine(newData.Birthdate);
-
             if (!oldData.Email.Equals(newData.Email) && !string.IsNullOrWhiteSpace(newData.Email))
                 oldData.Email = newData.Email;
             if (!oldData.Username.Equals(newData.Username) && !string.IsNullOrWhiteSpace(newData.Username))

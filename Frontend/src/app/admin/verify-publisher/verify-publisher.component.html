@@ -1,0 +1,104 @@
+<ng-template #loading>Loading…</ng-template>
+<div class="container" *ngIf="(Publisher$ | async) as Publisher; else loading" style="padding-top: 2%;">
+    <div class="card">
+        <div class="card-header">
+            <h4 style="text-align: center;">Publisher Information</h4>
+        </div>
+        <div class="card-body">
+            <picture>
+                <img (click)="showImgIdentity()" id="imgidentity" class="card-img-top rounded" [src]="Publisher.identityCard">
+              </picture>
+            <div class="container" style="padding: 5% ;">
+
+                <div class="form-group row">
+                    <div class="from-group col">
+                        <label for="PublisherId">Publisher ID</label>
+                        <input value={{Publisher.publisherId}} class="form-control" readonly>
+                    </div>
+                    <div class="from-group col">
+                        <label for="PublisherName">Publisher Name</label>
+                        <input value={{Publisher.publisherName}} class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="from-group col">
+                        <label for="FirstName">First Name</label>
+                        <input value={{Publisher.firstName}} class="form-control" readonly>
+                    </div>
+                    <div class="from-group col">
+                        <label for="LastName">Last Name</label>
+                        <input value={{Publisher.lastName}} class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="from-group col">
+                        <label for="Email">Email</label>
+                        <input value={{Publisher.email}} class="form-control" readonly>
+                    </div>
+                    <div class="from-group col">
+                        <label for="PhoneNumber">Phone Number</label>
+                        <input value={{Publisher.phoneNumber}} class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="from-group col">
+                        <label for="Street">Street Address</label>
+                        <input value={{Publisher.streetAddress}} class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="from-group col">
+                        <label for="City">City</label>
+                        <input value={{Publisher.city}} class="form-control" readonly>
+                    </div>
+                    <div class="from-group col">
+                        <label for="State">State</label>
+                        <input value={{Publisher.state}} class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="from-group col">
+                        <label for="Country">Country</label>
+                        <input value={{Publisher.country}} class="form-control" readonly>
+                    </div>
+                    <div class="from-group col">
+                        <label for="Postal">Postal Code</label>
+                        <input value={{Publisher.postal}} class="form-control" readonly>
+                    </div>
+                </div>
+
+                    <div class="container" style="padding-top: 2% ;">
+                        <div class="form-group row">
+                            <div class="from-group col">
+                                <button class="btn btn-success btn-block" (click)="Apply()" >Accept</button>
+                            </div>
+                            <div class="from-group col">
+                                <button class="btn btn-danger btn-block" [routerLink]="['../../publisher-request']" routerLinkActive="active">Back</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div [style.display]="showModal ? 'block' : 'none'" class="modal" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Identity Card</h4>
+          </div>
+          <picture>
+            <img id="imgidentitymodal" class="img-fluid" [src]="Publisher.identityCard" >
+        </picture>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hide()">Close</button>
+          </div>
+      </div>
+  </div>
+
+</div>

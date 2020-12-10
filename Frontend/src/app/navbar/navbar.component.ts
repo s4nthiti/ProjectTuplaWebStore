@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Profile } from '../_models/Profile';
+import { Role } from '../_models/role';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -35,7 +36,7 @@ export class NavbarComponent{
       if(!this.toggle)
       {
         this.toggle = true;
-        document.getElementById("mySidenav")!.style.width = "30%";
+        document.getElementById("mySidenav")!.style.width = "40%";
         document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
       }
       else
@@ -50,5 +51,25 @@ export class NavbarComponent{
       this.toggle = false;
         document.getElementById("mySidenav")!.style.width = "0";
         document.body.style.backgroundColor = "rgba(0,0,0,0)";
+    }
+
+    isUser() {
+      var userRole = localStorage.getItem('role');
+      if(userRole)
+      {
+        if(userRole === Role.User)
+          return true;
+      }
+      return false;
+    }
+
+    isAdmin() {
+      var userRole = localStorage.getItem('role');
+      if(userRole)
+      {
+        if(userRole === Role.Admin)
+          return true;
+      }
+      return false;
     }
 }

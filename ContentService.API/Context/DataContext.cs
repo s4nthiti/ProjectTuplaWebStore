@@ -17,5 +17,7 @@ namespace ContentService.API.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<IdentityCard> IdentityCards { get; set; }
     }
 }

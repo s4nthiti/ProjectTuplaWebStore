@@ -17,9 +17,13 @@ namespace ContentService.API.Services
         Task UploadImageAsync(IFormFile Image, string subPath, string FileName);
         void DeleteImage(string subPath);
         bool ImageCheck(string userID);
+        bool IdentityCheck(string userID);
         void AddToDB(UserImage model);
         void RemoveFromDB(string userID);
+        void AddIdentityToDB(IdentityCard model);
+        void RemoveIdentityFromDB(string userID);
         string GetProfilePath(string userID);
+        string GetIdentityPath(string userID);
 
     }
 
@@ -62,6 +66,14 @@ namespace ContentService.API.Services
                 return false;
         }
 
+        public bool IdentityCheck(string userID)
+        {
+            if (_context.IdentityCards.Where(a => a.userId == int.Parse(userID)).Any())
+                return true;
+            else
+                return false;
+        }
+
         public void AddToDB(UserImage model)
         {
             _context.UserImages.Add(model);
@@ -75,12 +87,34 @@ namespace ContentService.API.Services
             _context.SaveChanges();
         }
 
+        public void AddIdentityToDB(IdentityCard model)
+        {
+            _context.IdentityCards.Add(model);
+            _context.SaveChanges();
+        }
+
+        public void RemoveIdentityFromDB(string userID)
+        {
+            var userImage = _context.IdentityCards.Where(a => a.userId == int.Parse(userID)).FirstOrDefault();
+            _context.IdentityCards.Remove(userImage);
+            _context.SaveChanges();
+        }
+
         public string GetProfilePath(string userID)
         {
             var user = _context.UserImages.Where(a => a.userId == int.Parse(userID)).FirstOrDefault();
             string path = "";
             if (user != null)
                 path = $"Images/UserProfile/{user.imgName}";
+            return path;
+        }
+
+        public string GetIdentityPath(string userID)
+        {
+            var user = _context.IdentityCards.Where(a => a.userId == int.Parse(userID)).FirstOrDefault();
+            string path = "";
+            if (user != null)
+                path = $"Images/IdentityCard/{user.imgName}";
             return path;
         }
 

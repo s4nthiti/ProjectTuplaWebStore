@@ -30,6 +30,53 @@ namespace ContentService.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IdentityCards",
+                columns: table => new
+                {
+                    imgId = table.Column<string>(nullable: false),
+                    imgName = table.Column<string>(nullable: true),
+                    userId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityCards", x => x.imgId);
+                    table.ForeignKey(
+                        name: "FK_IdentityCards_Users_userId",
+                        column: x => x.userId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Publishers",
+                columns: table => new
+                {
+                    publisherId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    publisherName = table.Column<string>(nullable: true),
+                    streetAddress = table.Column<string>(nullable: true),
+                    city = table.Column<string>(nullable: true),
+                    state = table.Column<string>(nullable: true),
+                    postal = table.Column<string>(nullable: true),
+                    country = table.Column<string>(nullable: true),
+                    verify = table.Column<bool>(nullable: false),
+                    verifyBy = table.Column<int>(nullable: false),
+                    verifyDate = table.Column<DateTime>(nullable: false),
+                    userId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publishers", x => x.publisherId);
+                    table.ForeignKey(
+                        name: "FK_Publishers_Users_userId",
+                        column: x => x.userId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RefreshToken",
                 columns: table => new
                 {
@@ -75,6 +122,16 @@ namespace ContentService.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_IdentityCards_userId",
+                table: "IdentityCards",
+                column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publishers_userId",
+                table: "Publishers",
+                column: "userId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",
                 table: "RefreshToken",
                 column: "UserId");
@@ -87,6 +144,12 @@ namespace ContentService.API.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "IdentityCards");
+
+            migrationBuilder.DropTable(
+                name: "Publishers");
+
             migrationBuilder.DropTable(
                 name: "RefreshToken");
 

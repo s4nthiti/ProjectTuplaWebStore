@@ -1,0 +1,186 @@
+<div class="container rounded AdminPageContent" style="background: #ffb46d;">
+    <div class="rounded" style="position:relative; top: 10px; padding: 10px; text-align: center; background:#ffa551;">
+        <div class="progress-bar-custom" style="background:#ffa551; position:relative; top: 2px;">
+            <a [ngStyle]="{'font-weight': pageCheck(1) ? 'bold' : 'normal'}" style="padding: 20px;"> Introduction </a>
+            <a class="fa fa-angle-right"></a>
+            <a [ngStyle]="{'font-weight': pageCheck(2) ? 'bold' : 'normal'}" style="padding: 20px;"> Publisher Information</a>
+            <a class="fa fa-angle-right"></a>
+            <a [ngStyle]="{'font-weight': pageCheck(3) ? 'bold' : 'normal'}" style="padding: 20px;"> Success </a>
+        </div>
+    </div>
+
+    <div *ngIf="pageCheck(1)">
+        <div class="page_desc" style="position:relative; top: 10px; padding: 10px;">
+            <div class="section_title">What To Expect</div>
+            <div class="list_item_desc">There are a couple of steps along the path to getting your game up and ready for distribution via Steam. Here is a general overview.</div>
+            <div class="list_item_desc">
+            <ol>
+                <li>Sign the digital paperwork. You’ll need the information as detailed below.</li>
+                <li>Pay the app deposit fee with any supported Steam payment method as detailed below.</li>
+                <li>Complete the paperwork with your bank and tax information as well as identity verification so that we know who we’ll be doing business with.</li>
+                <li>Now you have access to Steamworks and can begin preparing your title for release. You’ll need to build your store page, upload your builds, configure any Steamworks features, and enter your desired pricing. We’ve worked hard to streamline our tools and document all the features and functionality available to you. Check out the Steamworks documentation for more details.</li>
+                <li>Before your store page or game build can go live, there is a brief review process where we run your game, look at your store page, and check that it is configured correctly and running as expected and not doing anything harmful. This takes between 1-5 days.</li>
+                <li>There are a couple of additional timing requirements before you can release your first few titles on Steam:</li>
+                <ol>
+                    <li>A 30-day waiting period between when you paid the app fee and when you can release your game.  This gives us time to review your information and confirm that we know who we're doing business with.</li>
+                    <li>You’ll need to prepare your store page and put up a publicly-visible ‘coming soon’ page for at least two weeks. This will help you start building your audience of interested customers that can wishlist your game or participate in discussions. This also gives you the opportunity to practice how you talk about your product so that you can have the best presentation when you hit the ‘release’ button.</li>
+                </ol>
+                <li>Now you’re all set to release. The release controls are now in your hands and you can update whenever you want.</li>
+            </ol>
+            <br>
+            </div>
+        <br>
+
+        <div class="section_title">Information you should have handy:</div>
+            <div class="list_item_title">Legal name and identification</div>
+            <div class="list_item_desc">We'll need accurate, legal identification of the person or entity signing so we know who you are and who you represent. This can be your personal information (if signing up as an individual) or your company information (if signing up as a company).</div>
+            <br>
+            
+            <div class="list_item_title">Payment information</div>
+            <div class="list_item_desc">We'll need accurate bank information, such as routing number, bank account number, and bank address so we know where to send payments from sales of your application.</div>
+            <br>
+            <div class="list_item_desc emphasis">Note that the account holder name on your bank account must match the name of your legal identification described above. If you are signing up as a company and don't yet have a bank account established for your business, you will need to open one before you can proceed.</div>
+            <br>
+
+            <div class="list_item_title">Tax information</div>
+            <div class="list_item_desc">You’ll be directed through a brief tax questionnaire to determine your tax status and withholding rate. The information you need in order to complete the questionnaire will depend on whether you are signing up as an individual or as a company, and where you or your company is located. US citizens and corporations will need information similar to that found on <a href="http://www.irs.gov/pub/irs-pdf/fw9.pdf" target="_blank">form W-9</a>. Citizens and corporations in a <a href="https://www.irs.gov/businesses/international-businesses/united-states-income-tax-treaties-a-to-z" target="_blank">country with US tax treaty status</a> will need information similar to that found on <a href="http://www.irs.gov/pub/irs-pdf/fw8ben.pdf" target="_blank">form W-8BEN</a>.</div>
+            <br>
+            <div class="list_item_desc">All required information is necessary to get you set up in Steamworks. Click <a href="https://partner.steamgames.com/doc/gettingstarted/faq" target="_blank">here</a> for more details on tax withholding.</div>
+            <br>
+
+            <div class="list_item_title">Product Submission Fee</div>
+            <div class="list_item_desc">In order to get fully set up, you will need to pay a $100.00 USD fee for each product you wish to distribute on Steam. You can pay this fee with any payment method supported by Steam in your region, except methods that use the Steam Wallet.<br><br>This fee is not refundable, but will be recoupable in the payment made after your product has at least $1,000.00 USD Adjusted Gross Revenue for Steam Store and in-app purchases. Payment of revenue from sales and repayment of fee may be withheld if deposit payment is charged-back, refunded, or otherwise identified as fraudulent.</div>
+            <br>
+        </div>
+        <br>
+
+        <div class="section_title">Rules and guidelines</div>
+	    <div>
+		    <div class="list_item_desc">We have a few guidelines about the content that can be distributed via Steam. Please keep these guidelines in mind when choosing whether to proceed with distribution.</div>
+		    <br>
+		    <div class="list_item_title">What you shouldn’t publish on Steam:</div>
+		    <div class="list_item_desc">
+                <ol>
+                <li> Adult content that isn’t appropriately labeled and age-gated</li>
+                <li> Libelous or defamatory statements</li>
+                <li> Content you don’t own or have adequate rights to</li>
+                <li> Content that violates the laws of any jurisdiction in which it will be available</li>
+                <li> Content that exploits children in any way</li>
+                <li> Applications that modify customer’s computers in unexpected or harmful ways, such as malware or viruses</li>
+                <li> Applications that fraudulently attempts to gather sensitive information, such as Steam credentials or financial data (e.g. credit card information)</li>
+                </ol>
+            </div>
+		<br>
+		<div class="list_item_title">Accepted types of content</div>
+		<div class="list_item_desc">We are currently accepting the following types of content: Games and VR Experiences. Non-game software is not currently accepted through Steam Direct. If you have a non-game software that you wish to bring to Steam, please see <a href="https://help.steampowered.com/wizard/HelpWithPublishing?issueid=925">Distributing Non-Game Software</a>.</div>
+		<br>
+		<div class="list_item_desc">In addition to the above items, content you publish on Steam should of course comply with the Steam Distribution Agreement, the <a href="http://store.steampowered.com/subscriber_agreement/" target="_blank">Steam Subscriber Agreement</a>, <a href="http://store.steampowered.com/online_conduct/" target="_blank">Steam Online Conduct</a> guidelines and the <a href="http://store.steampowered.com/privacy_agreement/" target="_blank">Steam Privacy Policy</a>.</div>
+	    </div>
+        <br><br>
+	    <div class="section_title">Let’s get started</div>
+	    <div>
+		    <div class="list_item_desc">Click the Next button below to proceed to entering your legal name and contact information.</div>
+	    </div>
+        <br><br>
+        <div class="page_controls">
+            <span class="btn-green-custom-1" *ngIf="maxPage()" (click)="nextPage()">
+                <a>Next</a>
+            </span>
+        </div>
+        <div style="clear: right" class="bottom_space">&nbsp;</div>
+    </div>
+
+    <div *ngIf="pageCheck(2)">
+        <div class="container" style="top: 10px; padding: 10px;">
+            <h1 style="text-align: center;">Publisher Information</h1>
+
+            <form #imageForm=ngForm (ngSubmit)="save()" style="padding-top: 2%; margin-left: auto; margin-right: auto;">
+                <picture >
+                    <img id="imgidentity" class="card-img-top rounded" *ngIf="userIdentityImg==null"
+                        [src]="userIdentityPreview">
+                    <img id="imgidentity" class="card-img-top rounded" *ngIf="userIdentityImg!=null"
+                        [src]="userIdentityImg">
+                    <input style="padding-top:2%;" type="file" #IdentityImg accept="image/*"
+                        (change)=" handlerIdentityImgInput($event)">
+                </picture>
+            </form>
+
+            <form [formGroup]="form" (ngSubmit)="save()" #formDir="ngForm">
+                <div class="form-group">
+
+                    <label for="PublisherName">Publisher Name</label>
+                    <input type="text" formControlName="publisherName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.publisherName.errors }" />
+                    <div *ngIf="submitted && f.publisherName.errors" class="invalid-feedback">
+                        <div *ngIf="f.publisherName.errors.required">Publisher Name is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="StreetAddress">Street Address</label>
+                    <input type="text" formControlName="streetAddress" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.streetAddress.errors }" />
+                    <div *ngIf="submitted && f.streetAddress.errors" class="invalid-feedback">
+                        <div *ngIf="f.streetAddress.errors.required">Street Address is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="City">City</label>
+                    <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+                    <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                        <div *ngIf="f.city.errors.required">City is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="State">State</label>
+                    <input type="text" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
+                    <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                        <div *ngIf="f.state.errors.required">State is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Postal">Postal Code</label>
+                    <input type="text" formControlName="postal" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.postal.errors }" />
+                    <div *ngIf="submitted && f.postal.errors" class="invalid-feedback">
+                        <div *ngIf="f.postal.errors.required">Postal Code is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Country">Country</label>
+                    <input type="text" formControlName="country" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.country.errors }" />
+                    <div *ngIf="submitted && f.country.errors" class="invalid-feedback">
+                        <div *ngIf="f.country.errors.required">Country is required</div>
+                    </div>
+                </div>
+
+                <div class="page_controls">
+                    <span class="btn-red-custom-1" style="position: relative; right: 5px" *ngIf="minPage()" (click)="previousPage()">
+                        <a>Back</a>
+                    </span>
+                    <button type="submit" class="btn-green-custom-1" *ngIf="maxPage()">Next</button>
+                </div>
+
+            </form>
+        </div>
+        <div style="clear: right" class="bottom_space">&nbsp;</div>
+    </div>
+
+    <div *ngIf="pageCheck(3)">
+
+        <div class="page_desc" style="position:relative; top: 10px; padding: 10px;">
+            <div class="section_title">Success</div>
+            <div class="list_item_desc">Thank you for your registeration, we'll verify and approved soon.</div>
+            <br>
+        </div>
+        <br>
+
+        <div class="page_controls">
+            <span class="btn-green-custom-1" style="position: relative; right: 5px" [routerLink]="['../home']" routerLinkActive="active">
+                <a>Back to Home</a>
+            </span>
+        </div>
+        <div style="clear: right" class="bottom_space">&nbsp;</div>
+    </div>
+
+</div>

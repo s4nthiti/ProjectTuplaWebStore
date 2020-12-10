@@ -17,6 +17,7 @@ export class AppComponent {
   
   ngOnInit() {
     const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
     const user: User = JSON.parse(localStorage.getItem('user')!);
 
     if (token) {
@@ -25,6 +26,8 @@ export class AppComponent {
 
     if (user) {
       this._authService.currentUser = user;
-  }
+      this._authService.userRole = role;
+    }
+
   }
 }

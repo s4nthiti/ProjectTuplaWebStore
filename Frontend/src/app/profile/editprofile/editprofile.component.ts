@@ -103,6 +103,7 @@ export class EditprofileComponent implements OnInit {
           this.userservice.currentUser.birthdate = user.birthdate;
           this.userservice.currentUser.phoneNumber = user.phoneNumber;
           this.userservice.currentUser.userIMG = user.userIMG;
+          console.log("img = " + this.userservice.currentUser.userIMG);
           localStorage.setItem('user', JSON.stringify(this.userservice.currentUser));
         });
         window.location.reload();
@@ -115,6 +116,7 @@ export class EditprofileComponent implements OnInit {
       window.location.reload();
     }
   }
+  
   handlerProfileImgInput(fileIn: Event) {
     const target= fileIn.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
