@@ -75,7 +75,7 @@ namespace ContentService.API.Services
 
         public Publisher GetById(int id)
         {
-            return _context.Publishers.Find(id);
+            return _context.Publishers.Where(x => x.userId == id).FirstOrDefault();
         }
 
     }

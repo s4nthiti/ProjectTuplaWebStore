@@ -44,7 +44,6 @@ namespace ContentService.API.Controllers
             {
                 try
                 {
-                    Console.WriteLine(oldData);
                     oldData.publisherName = model.publisherName;
                     oldData.streetAddress = model.streetAddress;
                     oldData.city = model.city;
@@ -133,7 +132,7 @@ namespace ContentService.API.Controllers
             string identityCard = "";
             if (!string.IsNullOrEmpty(imagePath))
             {
-                identityCard = $"http://localhost:5000/{imagePath}";
+                identityCard = $"http://tupla.sytes.net:5000/{imagePath}";
             }
             return Ok(new
             {

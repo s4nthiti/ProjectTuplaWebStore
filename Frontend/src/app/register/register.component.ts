@@ -47,6 +47,8 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    if(!this.service.formModel.valid)
+      return;
     this.alertService.clear()
     this.service.register()
             .pipe(first())

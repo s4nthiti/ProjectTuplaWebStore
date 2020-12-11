@@ -27,7 +27,7 @@ export class AuthenticationService {
     })};
 
   constructor(private jwtHelper: JwtHelperService,private fb: FormBuilder, private http: HttpClient,private router: Router,private alertService: AlertService,private datePipe: DatePipe) { }
-  readonly BaseURI = 'http://localhost:5000/';
+  readonly BaseURI = 'http://tupla.sytes.net:25566/';
   readonly RegisterURL = 'users/register';
   readonly LoginURL = 'users/login';
   readonly ProfileURL = 'users/profile';
@@ -39,24 +39,28 @@ export class AuthenticationService {
   });
 
   formModel = this.fb.group({
-    Email: ['', Validators.email],
+    Email: ['', [Validators.email, Validators.required]],
     UserName: ['', Validators.required],
     FirstName: ['', Validators.required],
     LastName: ['', Validators.required],
     Passwords: this.fb.group({
       Password: ['', [Validators.required, Validators.minLength(4)]],
       ConfirmPassword: ['', Validators.required]
-    }, { validator: this.checkPasswords }),
+    }, { validator: this.comparePasswords }),
     BirthDate: ['', Validators.required],
     PhoneNumber: ['', [Validators.required,Validators.minLength(10)]]
   });
 
-  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
-  let pass = group.get('Password')!.value;
-  let confirmPass = group.get('ConfirmPassword')!.value;
+  comparePasswords(fb: FormGroup) {
+    let confirmPswrdCtrl = fb.get('ConfirmPassword');
+    if (confirmPswrdCtrl!.errors == null || 'passwordMismatch' in confirmPswrdCtrl!.errors) {
+      if (fb.get('Password')!.value != confirmPswrdCtrl!.value)
+        confirmPswrdCtrl!.setErrors({ passwordMismatch: true });
+      else
+        confirmPswrdCtrl!.setErrors(null);
+    }
+  }
 
-  return pass === confirmPass ? null : { notSame: true }     
-}
 
   register() {
     var body = {
@@ -140,10 +144,7 @@ export class AuthenticationService {
 
   getUserProfile():Observable<User> {
     var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token')});
-    return this.http.get<User>(this.BaseURI + this.ProfileURL, { headers: tokenHeader })
-    .pipe(
-      catchError(this.errorHandler)
-    );
+    return this.http.get<User>(this.BaseURI + this.ProfileURL, { headers: tokenHeader });
   }
 
   transformDate(birthdate: Date)
@@ -153,10 +154,7 @@ export class AuthenticationService {
 
   updateProfile(data: any){
     var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('token')});
-    return this.http.post(this.BaseURI + this.EditProfileURL, data, { headers: tokenHeader })
-      .pipe(
-        catchError(this.errorHandler)
-    );
+    return this.http.post(this.BaseURI + this.EditProfileURL, data, { headers: tokenHeader });
   }
 
   loggedIn() {

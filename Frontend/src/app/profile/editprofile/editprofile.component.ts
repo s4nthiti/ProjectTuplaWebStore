@@ -28,12 +28,14 @@ export class EditprofileComponent implements OnInit {
   maxDate: any;
   submitted = false;
 
+  imageFault = false;
+
   form = this.formBuilder.group(
     {
       username: ['', [Validators.required]],
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
-      email: ['', [Validators.email]],
+      email: ['', [Validators.email, Validators.required]],
       birthdate: ['', [Validators.required]],
       phonenumber: ['', [Validators.required, Validators.minLength(10)]]
     }
@@ -76,6 +78,12 @@ export class EditprofileComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
+    if (this.imageFault)
+    {
+      this.alertService.error("Please check your image format (.jpg .jpeg .png)", { autoClose: true });
+      return;
+    }
+    this.alertService.clear();
     let profile = {
       username: this.form.get(this.formUsername)!.value,
       firstName: this.form.get(this.formFirstname)!.value,
@@ -102,11 +110,17 @@ export class EditprofileComponent implements OnInit {
           this.userservice.currentUser.email = user.email;
           this.userservice.currentUser.birthdate = user.birthdate;
           this.userservice.currentUser.phoneNumber = user.phoneNumber;
-          this.userservice.currentUser.userIMG = user.userIMG;
+          if(!user.userIMG)
+            this.userservice.currentUser.userIMG = this.userProfilePreview;
+          else
+            this.userservice.currentUser.userIMG = user.userIMG;
           console.log("img = " + this.userservice.currentUser.userIMG);
           localStorage.setItem('user', JSON.stringify(this.userservice.currentUser));
         });
+        this.alertService.success('Successful Edited', { keepAfterRouteChange: true });
         window.location.reload();
+      },error => {
+        this.alertService.error(error.error.message , { keepAfterRouteChange: true });
       })
     }
     else
@@ -131,10 +145,12 @@ export class EditprofileComponent implements OnInit {
         reader.onload = (event: any) => {
           this.userProfileImg = event.target.result;
         }
+        this.imageFault = false;
         reader.readAsDataURL(this.userProfileImgUpload);
       }
       else
       {
+        this.imageFault = true;
         this.alertService.error("Please check your image format (.jpg .jpeg .png)", { autoClose: true });
       }
     }

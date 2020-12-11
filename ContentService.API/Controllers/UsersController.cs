@@ -52,8 +52,9 @@ namespace ContentService.API.Controllers
             string userIMG = "";
             if(!string.IsNullOrEmpty(imagePath))
             {
-                userIMG = $"http://localhost:5000/{imagePath}";
+                userIMG = $"http://tupla.sytes.net:5000/{imagePath}";
             }
+            Console.WriteLine("User " + response.Username + "Logged In " + DateTime.Now.ToString());
             var user = new
             {
                 response.Id,
@@ -207,7 +208,7 @@ namespace ContentService.API.Controllers
             string userIMG = "";
             if (!string.IsNullOrEmpty(imagePath))
             {
-                userIMG = $"http://localhost:5000/{imagePath}";
+                userIMG = $"http://tupla.sytes.net:5000/{imagePath}";
             }
             return Ok(new
             {
@@ -231,44 +232,56 @@ namespace ContentService.API.Controllers
             var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
             var oldData = _userService.GetById(int.Parse(userId));
-            if (!oldData.Email.Equals(newData.Email) && !string.IsNullOrWhiteSpace(newData.Email))
-                oldData.Email = newData.Email;
-            if (!oldData.Username.Equals(newData.Username) && !string.IsNullOrWhiteSpace(newData.Username))
-                oldData.Username = newData.Username;
-            if (!oldData.Password.Equals(newData.Password) && !string.IsNullOrWhiteSpace(newData.Password))
-                oldData.Password = newData.Password;
-            if (!oldData.FirstName.Equals(newData.Firstname) && !string.IsNullOrWhiteSpace(newData.Firstname))
-                oldData.FirstName = newData.Firstname;
-            if (!oldData.LastName.Equals(newData.Lastname) && !string.IsNullOrWhiteSpace(newData.Lastname))
-                oldData.LastName = newData.Lastname;
-            if (!oldData.Birthdate.Equals(newData.Birthdate) && newData.Birthdate != DateTime.MinValue)
-                oldData.Birthdate = newData.Birthdate;
-            if (!oldData.PhoneNumber.Equals(newData.PhoneNumber) && !string.IsNullOrWhiteSpace(newData.PhoneNumber))
-                oldData.PhoneNumber = newData.PhoneNumber;
-            if (newData.Image != null)
+            try
             {
-                try
+                if (!oldData.Email.Equals(newData.Email) && !string.IsNullOrWhiteSpace(newData.Email))
+                    oldData.Email = newData.Email;
+                if (!oldData.Username.Equals(newData.Username) && !string.IsNullOrWhiteSpace(newData.Username))
                 {
-                    string subPath = "UserProfile";
-                    if (_imageService.ImageCheck(userId))
+                    if (_userService.GetByUsername(newData.Username) != null)
+                        throw new AppException("Username \"" + newData.Username + "\" is already taken");
+                    oldData.Username = newData.Username;
+                }
+                if (!oldData.Password.Equals(newData.Password) && !string.IsNullOrWhiteSpace(newData.Password))
+                    oldData.Password = newData.Password;
+                if (!oldData.FirstName.Equals(newData.Firstname) && !string.IsNullOrWhiteSpace(newData.Firstname))
+                    oldData.FirstName = newData.Firstname;
+                if (!oldData.LastName.Equals(newData.Lastname) && !string.IsNullOrWhiteSpace(newData.Lastname))
+                    oldData.LastName = newData.Lastname;
+                if (!oldData.Birthdate.Equals(newData.Birthdate) && newData.Birthdate != DateTime.MinValue)
+                    oldData.Birthdate = newData.Birthdate;
+                if (!oldData.PhoneNumber.Equals(newData.PhoneNumber) && !string.IsNullOrWhiteSpace(newData.PhoneNumber))
+                    oldData.PhoneNumber = newData.PhoneNumber;
+                if (newData.Image != null)
+                {
+                    try
                     {
-                        string path = _imageService.GetProfilePath(userId);
-                        _imageService.DeleteImage(path);
-                        _imageService.RemoveFromDB(userId);
+                        string subPath = "UserProfile";
+                        if (_imageService.ImageCheck(userId))
+                        {
+                            string path = _imageService.GetProfilePath(userId);
+                            _imageService.DeleteImage(path);
+                            _imageService.RemoveFromDB(userId);
+                        }
+                        string UserProfileFileName = $"UPF_{userId}_{DateTime.Now.Ticks.ToString()}.png";
+                        await _imageService.UploadImageAsync(newData.Image, subPath, UserProfileFileName);
+                        UserImage userIMG = new UserImage();
+                        userIMG.imgName = UserProfileFileName;
+                        userIMG.userId = int.Parse(userId);
+                        _imageService.AddToDB(userIMG);
                     }
-                    string UserProfileFileName = $"UPF_{userId}_{DateTime.Now.Ticks.ToString()}.png";
-                    await _imageService.UploadImageAsync(newData.Image, subPath, UserProfileFileName);
-                    UserImage userIMG = new UserImage();
-                    userIMG.imgName = UserProfileFileName;
-                    userIMG.userId = int.Parse(userId);
-                    _imageService.AddToDB(userIMG);
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
-                catch(Exception ex)
-                {
-                    throw ex;
-                }
+                _userService.Update(oldData);
             }
-            _userService.Update(oldData);
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
             return Ok();
         }
     }

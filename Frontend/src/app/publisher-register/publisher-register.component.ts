@@ -35,6 +35,8 @@ export class PublisherRegisterComponent implements OnInit {
   formPostal: any;
   formCountry: any;
 
+  imageFault = false;
+
   userIdentityImg: null;
   userIdentityImgUpload!: File;
   userIdentityPreview: string = 'assets/images/identitycard.png';
@@ -96,6 +98,11 @@ export class PublisherRegisterComponent implements OnInit {
       this.onTop();
       return;
     }
+    if (this.imageFault)
+    {
+      this.alertService.error("Please check your image format (.jpg .jpeg .png)", { autoClose: true });
+      return;
+    }
     let publisher = {
       publisherName: this.form.value.publisherName,
       streetAddress: this.form.value.streetAddress,
@@ -145,10 +152,12 @@ export class PublisherRegisterComponent implements OnInit {
         reader.onload = (event: any) => {
           this.userIdentityImg = event.target.result;
         }
+        this.imageFault = false;
         reader.readAsDataURL(this.userIdentityImgUpload);
       }
       else
       {
+        this.imageFault = true;
         this.alertService.error("Please check your image format (.jpg .jpeg .png)", { autoClose: true });
       }
     }

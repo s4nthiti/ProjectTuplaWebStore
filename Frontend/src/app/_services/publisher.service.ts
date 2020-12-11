@@ -11,7 +11,7 @@ import { PublisherRequestList } from '../_models/PublisherRequestList';
 })
 export class PublisherService {
 
-  readonly BaseURI = 'http://localhost:5000/';
+  readonly BaseURI = 'http://tupla.sytes.net:25566/';
   readonly PublisherRegisterURL = 'publisher/register';
   readonly PublisherRequestURL = 'publisher';
   readonly VerifyRequestURL = 'publisher/verify/';

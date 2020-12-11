@@ -129,7 +129,7 @@ namespace ContentService.API.Services
 
         public User GetByUsername(string username)
         {
-            return _context.Users.Find(username);
+            return _context.Users.Where(a => a.Username == username).FirstOrDefault();
         }
 
         public User Create(User user, string password)
@@ -224,11 +224,11 @@ namespace ContentService.API.Services
             string userIMG = "";
             if (!string.IsNullOrEmpty(imagePath))
             {
-                userIMG = $"http://localhost:5000/{imagePath}";
+                userIMG = $"http://tupla.sytes.net:5000/{imagePath}";
             }
             else
             {
-                userIMG = $"http://localhost:5000/Images/Assets/user-demo.jpg";
+                userIMG = $"http://tupla.sytes.net:5000/Images/Assets/user-demo.jpg";
             }
             var tokenDescriptor = new SecurityTokenDescriptor
             {
